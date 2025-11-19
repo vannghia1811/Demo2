@@ -1,0 +1,2487 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trắc Nghiệm</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px 8px 0 0;
+            margin-bottom: 20px;
+        }
+        
+        .main-title {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .sub-title {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        
+        .quiz-info {
+            display: flex;
+            justify-content: space-between;
+            background-color: #3498db;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        
+        .timer {
+            font-size: 20px;
+            font-weight: bold;
+        }
+        
+        .question-counter {
+            font-size: 18px;
+        }
+        
+        .progress-container {
+            width: 100%;
+            background-color: #ecf0f1;
+            border-radius: 5px;
+            margin: 10px 0;
+            height: 8px;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background-color: #2ecc71;
+            border-radius: 5px;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        .quiz-container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+        
+        .question-container {
+            margin-bottom: 25px;
+        }
+        
+        .question-number {
+            font-size: 16px;
+            color: #7f8c8d;
+            margin-bottom: 5px;
+        }
+        
+        .question-text {
+            font-size: 18px;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .option {
+            display: flex;
+            align-items: flex-start;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .option:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .option.selected {
+            background-color: #e1f5fe;
+            border-color: #4fc3f7;
+        }
+        
+        .option.correct {
+            background-color: #e8f5e9;
+            border-color: #66bb6a;
+        }
+        
+        .option.incorrect {
+            background-color: #ffebee;
+            border-color: #ef5350;
+        }
+        
+        .option-letter {
+            font-weight: bold;
+            margin-right: 10px;
+            min-width: 25px;
+        }
+        
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+        
+        .btn-success {
+            background-color: #2ecc71;
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background-color: #27ae60;
+        }
+        
+        .btn-danger {
+            background-color: #e74c3c;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+        
+        .btn-warning {
+            background-color: #f39c12;
+            color: white;
+        }
+        
+        .btn-warning:hover {
+            background-color: #d35400;
+        }
+        
+        .results-container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .results-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        .score {
+            font-size: 36px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin: 15px 0;
+        }
+        
+        .score-details {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+        }
+        
+        .score-item {
+            text-align: center;
+        }
+        
+        .score-value {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .correct-answers .score-value {
+            color: #2ecc71;
+        }
+        
+        .incorrect-answers .score-value {
+            color: #e74c3c;
+        }
+        
+        .time-taken .score-value {
+            color: #3498db;
+        }
+        
+        .review-questions {
+            margin-top: 30px;
+        }
+        
+        .review-title {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+        
+        .review-item {
+            padding: 15px;
+            border: 1px solid #eee;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+        
+        .review-question {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .review-answer {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        
+        .answer-status {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-right: 10px;
+            text-align: center;
+            line-height: 20px;
+            font-size: 12px;
+            color: white;
+        }
+        
+        .correct-answer .answer-status {
+            background-color: #2ecc71;
+        }
+        
+        .incorrect-answer .answer-status {
+            background-color: #e74c3c;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .start-screen {
+            text-align: center;
+            padding: 50px 20px;
+        }
+        
+        .start-title {
+            font-size: 32px;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+        
+        .start-description {
+            font-size: 18px;
+            margin-bottom: 30px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .start-btn {
+            padding: 15px 40px;
+            font-size: 18px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .start-btn:hover {
+            background-color: #2980b9;
+            transform: scale(1.05);
+        }
+        
+        .loading {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+        
+        .question-navigation {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 20px 0;
+            justify-content: center;
+        }
+        
+        .question-nav-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            background-color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            transition: all 0.2s ease;
+        }
+        
+        .question-nav-btn:hover {
+            background-color: #f1f1f1;
+        }
+        
+        .question-nav-btn.answered {
+            background-color: #3498db;
+            color: white;
+            border-color: #3498db;
+        }
+        
+        .question-nav-btn.current {
+            background-color: #2c3e50;
+            color: white;
+            border-color: #2c3e50;
+        }
+        
+        @media (max-width: 768px) {
+            .quiz-info {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+            
+            .score-details {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .navigation {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+            
+            .question-navigation {
+                gap: 5px;
+            }
+            
+            .question-nav-btn {
+                width: 35px;
+                height: 35px;
+                font-size: 14px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .question-text {
+                font-size: 16px;
+            }
+            
+            .option {
+                padding: 10px 12px;
+            }
+            
+            .start-title {
+                font-size: 24px;
+            }
+            
+            .start-description {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 class="main-title">TRẮC NGHIỆM</h1>
+            <p class="sub-title">Ôn tập kiến thức</p>
+        </header>
+        
+<div id="start-screen" class="start-screen">
+    <img src="chu_ngua.webp"
+         alt="Start Image"
+         style="max-width: 100%; height: auto; border-radius: 12px; margin-bottom: 25px;">
+
+    <button id="start-btn" class="start-btn">Bắt Đầu Làm Bài</button>
+</div>
+
+        
+        <div id="quiz-screen" class="hidden">
+            <div class="quiz-info">
+                <div class="timer" id="timer">30:00</div>
+                <div class="question-counter">Câu <span id="current-question">1</span>/30</div>
+            </div>
+            
+            <div class="progress-container">
+                <div class="progress-bar" id="quiz-progress"></div>
+            </div>
+            
+            <div class="question-navigation" id="question-navigation">
+                <!-- Các nút điều hướng câu hỏi sẽ được thêm bằng JavaScript -->
+            </div>
+            
+            <div class="quiz-container">
+                <div class="question-container">
+                    <div class="question-text" id="question-text">Đang tải câu hỏi...</div>
+                    
+                    <div class="options-container" id="options-container">
+                        <!-- Các lựa chọn sẽ được thêm bằng JavaScript -->
+                    </div>
+                </div>
+                
+                <div class="navigation">
+                    <button id="prev-btn" class="btn btn-primary">Câu trước</button>
+                    <button id="save-btn" class="btn btn-warning">Lưu tiến trình</button>
+                    <button id="next-btn" class="btn btn-primary">Câu tiếp theo</button>
+                    <button id="submit-btn" class="btn btn-success">Nộp bài</button>
+                </div>
+            </div>
+        </div>
+        
+        <div id="results-screen" class="results-container hidden">
+            <div class="results-header">
+                <h2>Kết Quả Bài Làm</h2>
+                <div class="score" id="final-score">0/30</div>
+                <p id="score-message">Đang tính điểm...</p>
+            </div>
+            
+            <div class="score-details">
+                <div class="score-item correct-answers">
+                    <div class="score-label">Câu đúng</div>
+                    <div class="score-value" id="correct-count">0</div>
+                </div>
+                <div class="score-item incorrect-answers">
+                    <div class="score-label">Câu sai</div>
+                    <div class="score-value" id="incorrect-count">0</div>
+                </div>
+                <div class="score-item time-taken">
+                    <div class="score-label">Thời gian</div>
+                    <div class="score-value" id="time-taken">00:00</div>
+                </div>
+            </div>
+            
+            <div class="review-questions">
+                <h3 class="review-title">Xem lại các câu hỏi</h3>
+                <div id="review-list">
+                    <!-- Danh sách câu hỏi và đáp án sẽ được thêm bằng JavaScript -->
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 30px;">
+                <button id="restart-btn" class="btn btn-primary">Làm bài khác</button>
+                <button id="review-btn" class="btn btn-warning">Xem lại bài làm</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Ngân hàng câu hỏi đầy đủ - đã gộp tất cả câu hỏi từ code bạn gửi
+        const questionBank = [
+            // Bộ 40 câu đầu (141-180) - Quản lý chất thải
+            {
+                id: 141,
+                question: "Khi thu gom chất thải lây nhiễm, hộp chứa sắc nhọn bị rơi xuống sàn nhưng không vỡ. Nhân viên y tế cần làm gì đầu tiên?",
+                options: [
+                    "A. Tiếp tục thu gom bình thường",
+                    "B. Khử khuẩn khu vực rơi bằng hóa chất phù hợp",
+                    "C. Mang đi đốt ngay lập tức",
+                    "D. Chuyển cho khoa KSNK"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 142,
+                question: "Chất thải lây nhiễm thu gom vào túi vàng phải được buộc bằng:",
+                options: [
+                    "A. Dây cao su",
+                    "B. Dây rút hoặc buộc vòng cổ vịt",
+                    "C. Băng keo dán",
+                    "D. Dây vải bất kỳ"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 143,
+                question: "Điều kiện bắt buộc đối với thùng chứa rác lây nhiễm trong bệnh viện:",
+                options: [
+                    "A. Có bánh xe và có chân đạp mở nắp",
+                    "B. Mở bằng tay",
+                    "C. Đặt trên hành lang chung",
+                    "D. Không cần nắp"
+                ],
+                correctAnswer: 0
+            },
+            {
+                id: 144,
+                question: "Chất thải lây nhiễm từ buồng cách ly bệnh truyền nhiễm nguy hiểm được xử lý:",
+                options: [
+                    "A. Như rác sinh hoạt",
+                    "B. Như chất thải tái chế",
+                    "C. Như chất thải lây nhiễm nguy cơ cao",
+                    "D. Như chất thải thông thường"
+                ],
+                correctAnswer: 2
+            },
+            {
+                id: 145,
+                question: "Bao bì chứa chất thải lây nhiễm phải có:",
+                options: [
+                    "A. Biểu tượng cảnh báo sinh học",
+                    "B. Nhãn nhận diện khoa phòng",
+                    "C. Ngày giờ thu gom",
+                    "D. Tất cả ý trên"
+                ],
+                correctAnswer: 3
+            },
+            {
+                id: 146,
+                question: "Chất thải lây nhiễm phát sinh 10 kg/ngày. Tần suất thu gom tối thiểu:",
+                options: [
+                    "A. 1 lần/ngày",
+                    "B. 2 lần/ngày",
+                    "C. 3 lần/ngày",
+                    "D. 1 lần/tuần"
+                ],
+                correctAnswer: 0
+            },
+            {
+                id: 147,
+                question: "Nhiệm vụ không thuộc trách nhiệm của cơ sở y tế trong quản lý chất thải:",
+                options: [
+                    "A. Báo cáo định kỳ hàng năm",
+                    "B. Đào tạo nhân viên về quản lý chất thải",
+                    "C. Trực tiếp xử lý chất thải độc hại công nghiệp",
+                    "D. Phân công cán bộ phụ trách"
+                ],
+                correctAnswer: 2
+            },
+            {
+                id: 148,
+                question: "Chất thải có nguy cơ lây nhiễm cao phải:",
+                options: [
+                    "A. Xử lý sơ bộ trước thu gom",
+                    "B. Bỏ thẳng vào lò đốt",
+                    "C. Đóng gói 3 lớp",
+                    "D. Tái chế sau xử lý"
+                ],
+                correctAnswer: 0
+            },
+            {
+                id: 149,
+                question: "Mục tiêu chung của quản lý chất thải y tế:",
+                options: [
+                    "A. Đảm bảo vệ sinh môi trường bệnh viện",
+                    "B. Phòng ngừa lây nhiễm mầm bệnh",
+                    "C. Bảo vệ sức khỏe cộng đồng",
+                    "D. Tất cả đều đúng"
+                ],
+                correctAnswer: 3
+            },
+            {
+                id: 150,
+                question: "Chất thải tái chế phải:",
+                options: [
+                    "A. Không có dính máu và dịch tiết",
+                    "B. Được xử lý đạt quy chuẩn môi trường",
+                    "C. Phân loại đúng ngay nơi phát sinh",
+                    "D. Tất cả đều đúng"
+                ],
+                correctAnswer: 3
+            },
+            {
+                id: 151,
+                question: "Khu lưu giữ chất thải phải có:",
+                options: [
+                    "A. Mái che và nền chống thấm",
+                    "B. Biển báo cảnh báo",
+                    "C. Hệ thống thu gom nước thải",
+                    "D. Tất cả"
+                ],
+                correctAnswer: 3
+            },
+            {
+                id: 152,
+                question: "Chất thải nguy hại không lây nhiễm được lưu giữ tối đa:",
+                options: [
+                    "A. 1 tháng",
+                    "B. 6 tháng",
+                    "C. 1 năm",
+                    "D. Không giới hạn"
+                ],
+                correctAnswer: 2
+            },
+            {
+                id: 153,
+                question: "Nếu chất thải lây nhiễm để lẫn với chất thải thông thường thì phải:",
+                options: [
+                    "A. Xử lý như chất thải lây nhiễm",
+                    "B. Phân lại và tái sử dụng",
+                    "C. Đốt ngay lập tức",
+                    "D. Cho chung vào bãi rác"
+                ],
+                correctAnswer: 0
+            },
+            {
+                id: 154,
+                question: "Hồ sơ quản lý chất thải phải gồm:",
+                options: [
+                    "A. Nhật ký vận hành hệ thống xử lý",
+                    "B. Sổ giao nhận chất thải",
+                    "C. Báo cáo định kỳ",
+                    "D. Tất cả"
+                ],
+                correctAnswer: 3
+            },
+            {
+                id: 155,
+                question: "Xe vận chuyển chất thải phải:",
+                options: [
+                    "A. Kín, chống rò rỉ, dễ khử khuẩn",
+                    "B. Có thể dùng chung với rác sinh hoạt",
+                    "C. Không cần nắp",
+                    "D. Có thể mở khi di chuyển"
+                ],
+                correctAnswer: 0
+            },
+            {
+                id: 156,
+                question: "Chất thải lây nhiễm lưu trữ ở nhiệt độ phòng tối đa:",
+                options: [
+                    "A. 12 giờ",
+                    "B. 24 giờ",
+                    "C. 48 giờ",
+                    "D. 72 giờ"
+                ],
+                correctAnswer: 3
+            },
+            {
+                id: 157,
+                question: "Dấu hiệu nhận biết bao bì đúng quy định:",
+                options: [
+                    "A. Có màu và biểu tượng tiêu chuẩn",
+                    "B. Không rò rỉ, chống thủng",
+                    "C. Có ghi nhãn nhận diện",
+                    "D. Tất cả"
+                ],
+                correctAnswer: 3
+            },
+            {
+                id: 158,
+                question: "Nhựa dịch truyền chỉ được tái chế khi:",
+                options: [
+                    "A. Đã rửa sạch bằng nước",
+                    "B. Không dính máu và dịch tiết",
+                    "C. Đã xử lý đạt quy chuẩn môi trường",
+                    "D. B + C"
+                ],
+                correctAnswer: 3
+            },
+            {
+                id: 159,
+                question: "Chất thải giải phẫu bảo quản bằng:",
+                options: [
+                    "A. Túi trắng",
+                    "B. Hai lớp túi vàng",
+                    "C. Hộp kim loại tái sử dụng",
+                    "D. Túi màu đen"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 160,
+                question: "Màu sắc quy định cho chất thải rắn thông thường:",
+                options: [
+                    "A. Đỏ",
+                    "B. Vàng",
+                    "C. Xanh",
+                    "D. Trắng"
+                ],
+                correctAnswer: 2
+            },
+            {
+                id: 161,
+                question: "Khu lưu giữ chất thải phải cách nguồn sinh hoạt tối thiểu:",
+                options: [
+                    "A. 2m",
+                    "B. 5m",
+                    "C. 10m",
+                    "D. Không quy định"
+                ],
+                correctAnswer: 2
+            },
+            {
+                id: 162,
+                question: "Chất thải lây nhiễm dạng lỏng được thu gom:",
+                options: [
+                    "A. Vào túi vàng",
+                    "B. Vào hệ thống nước thải y tế",
+                    "C. Bỏ vào bồn cầu",
+                    "D. Đổ ra cống thoát nước mưa"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 163,
+                question: "Yếu tố quan trọng nhất đảm bảo phân loại chất thải:",
+                options: [
+                    "A. Thiết bị hiện đại",
+                    "B. Kiểm tra – giám sát – đào tạo nhân viên",
+                    "C. Tăng số lượng thùng",
+                    "D. Lắp camera"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 164,
+                question: "Sự cố đổ chất thải lây nhiễm phải xử lý theo nguyên tắc:",
+                options: [
+                    "A. Cô lập, khử khuẩn, thu gom an toàn",
+                    "B. Lau bằng nước sạch",
+                    "C. Đẩy sang thùng khác",
+                    "D. Đợi nhân viên chuyên trách"
+                ],
+                correctAnswer: 0
+            },
+            {
+                id: 165,
+                question: "Báo cáo công tác quản lý chất thải y tế hàng năm nộp trước:",
+                options: [
+                    "A. 1/1",
+                    "B. 16/12",
+                    "C. 31/12",
+                    "D. 15/10"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 166,
+                question: "Đơn vị chịu trách nhiệm kiểm tra, hướng dẫn công tác quản lý chất thải y tế:",
+                options: [
+                    "A. Bộ Công an",
+                    "B. Sở Y tế",
+                    "C. Bộ Nội vụ",
+                    "D. Bảo hiểm y tế"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 167,
+                question: "Chất thải lây nhiễm có dính hóa chất độc hại được quản lý như:",
+                options: [
+                    "A. Chất thải thông thường",
+                    "B. Chất thải nguy hại khác",
+                    "C. Chất thải tái chế",
+                    "D. Không cần phân loại"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 168,
+                question: "Mục tiêu cốt lõi của quản lý chất thải:",
+                options: [
+                    "A. Đảm bảo an toàn môi trường",
+                    "B. Đảm bảo an toàn NVYT",
+                    "C. Đảm bảo an toàn cộng đồng",
+                    "D. Tất cả"
+                ],
+                correctAnswer: 3
+            },
+            {
+                id: 169,
+                question: "Chất thải tái chế thu gom riêng để:",
+                options: [
+                    "A. Giảm tải cho hệ thống xử lý",
+                    "B. Bảo vệ môi trường",
+                    "C. Tăng hiệu quả quản lý",
+                    "D. Tất cả"
+                ],
+                correctAnswer: 3
+            },
+            {
+                id: 170,
+                question: "Bao bì chứa chất thải phải:",
+                options: [
+                    "A. Ghi đầy đủ thông tin nhận diện",
+                    "B. Không rách thủng",
+                    "C. Buộc kín trước vận chuyển",
+                    "D. Tất cả"
+                ],
+                correctAnswer: 3
+            },
+            {
+                id: 171,
+                question: "Nhân viên môi trường bị kim đâm do thu gom sai cách. Nguyên nhân chính:",
+                options: [
+                    "A. Không dùng hộp sắc nhọn chuẩn",
+                    "B. Không giám sát",
+                    "C. Thiếu đào tạo",
+                    "D. Tất cả"
+                ],
+                correctAnswer: 3
+            },
+            {
+                id: 172,
+                question: "Chất thải nguy hại không lây nhiễm bao gồm:",
+                options: [
+                    "A. Pin, bình ắc quy",
+                    "B. Hóa chất lab",
+                    "C. Bóng đèn huỳnh quang",
+                    "D. Tất cả"
+                ],
+                correctAnswer: 3
+            },
+            {
+                id: 173,
+                question: "Hệ thống xử lý chất thải phải:",
+                options: [
+                    "A. Có nhật ký vận hành",
+                    "B. Bảo trì định kỳ",
+                    "C. Hoạt động đúng quy trình",
+                    "D. Tất cả"
+                ],
+                correctAnswer: 3
+            },
+            {
+                id: 174,
+                question: "Điều kiện bắt buộc trước khi chuyển giao chất thải:",
+                options: [
+                    "A. Ghi đủ sổ giao nhận",
+                    "B. Có biên bản xác nhận",
+                    "C. Có hợp đồng xử lý",
+                    "D. Tất cả"
+                ],
+                correctAnswer: 3
+            },
+            {
+                id: 175,
+                question: "Dụng cụ làm sạch sự cố đổ tràn chất thải:",
+                options: [
+                    "A. Xô nước và chổi",
+                    "B. Cát khô, mùn cưa, hóa chất khử khuẩn",
+                    "C. Khăn lau và cồn",
+                    "D. Không cần dụng cụ chuyên dụng"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 176,
+                question: "Phương tiện bảo hộ lao động khi thu gom chất thải bắt buộc:",
+                options: [
+                    "A. Găng – khẩu trang – kính – ủng",
+                    "B. Áo bệnh nhân",
+                    "C. Quần áo bình thường",
+                    "D. Không cần"
+                ],
+                correctAnswer: 0
+            },
+            {
+                id: 177,
+                question: "Hành vi nguy hiểm nhất khi xử lý chất thải:",
+                options: [
+                    "A. Dùng tay nén chặt túi rác",
+                    "B. Đeo găng đôi",
+                    "C. Ghi nhãn bao bì",
+                    "D. Khử khuẩn định kỳ"
+                ],
+                correctAnswer: 0
+            },
+            {
+                id: 178,
+                question: "Nếu xe chở chất thải bị rò rỉ trên đường vận chuyển:",
+                options: [
+                    "A. Tiếp tục di chuyển đến điểm xử lý",
+                    "B. Ngừng ngay, xử lý khử khuẩn và thu gom",
+                    "C. Gọi đơn vị vận chuyển khác",
+                    "D. Che lại bằng vải"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 179,
+                question: "Biểu tượng cảnh báo sinh học trên chất thải dùng để:",
+                options: [
+                    "A. Nhận diện nguy cơ",
+                    "B. Mã hóa kỹ thuật",
+                    "C. Ghi ngày giờ",
+                    "D. Quản lý kho"
+                ],
+                correctAnswer: 0
+            },
+            {
+                id: 180,
+                question: "Lỗi thường gặp nhất dẫn đến sai sót quản lý chất thải:",
+                options: [
+                    "A. Thiếu đào tạo và giám sát",
+                    "B. Thiếu hóa chất",
+                    "C. Thiếu thùng",
+                    "D. Thiếu bảo vệ"
+                ],
+                correctAnswer: 0
+            },
+            // Bộ câu hỏi nâng cao (121-140)
+            {
+                id: 121,
+                question: "Tại khu lưu giữ chất thải, nhân viên phát hiện túi chất thải lây nhiễm bị rách và dịch rỉ ra nền. Biện pháp xử lý đầu tiên là:",
+                options: [
+                    "A. Dùng nước xịt rửa ngay",
+                    "B. Sử dụng hóa chất khử khuẩn tại vị trí rò rỉ",
+                    "C. Gọi đơn vị xử lý chất thải đến thu gom",
+                    "D. Để khô rồi mang quét dọn"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 122,
+                question: "Một hộp an toàn sắc nhọn bị đổ ngã trong quá trình vận chuyển nội viện. Việc phải thực hiện ngay:",
+                options: [
+                    "A. Gom lại bằng tay khi mang găng y tế thường",
+                    "B. Sử dụng kẹp và chổi để thu gom vào hộp mới",
+                    "C. Cho vào túi vàng buộc kín",
+                    "D. Chuyển về khu lưu giữ đợi xử lý cuối ngày"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 123,
+                question: "Xe vận chuyển chất thải lây nhiễm sau khi thu gom mỗi ca phải:",
+                options: [
+                    "A. Chỉ cần rửa bằng nước sạch",
+                    "B. Khử khuẩn và ghi chép nhật ký vệ sinh",
+                    "C. Để khô tự nhiên và dùng tiếp",
+                    "D. Khử bằng cồn 70°"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 124,
+                question: "Một cơ sở y tế không ký hợp đồng với đơn vị có giấy phép xử lý chất thải nguy hại mà tự thuê dịch vụ vận tải dân dụng để chuyển đi. Đây là vi phạm thuộc:",
+                options: [
+                    "A. Lưu giữ",
+                    "B. Vận chuyển",
+                    "C. Chứng từ",
+                    "D. Kiểm soát nội bộ"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 125,
+                question: "Hộp sắc nhọn có mũi kim lộ ra ngoài miệng hộp do đậy không khít. Xử trí phù hợp:",
+                options: [
+                    "A. Dùng tay đẩy xuống",
+                    "B. Đậy nắp chặt và niêm phong ngay",
+                    "C. Chuyển sang túi rác vàng",
+                    "D. Đổ bớt kim ra ngoài"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 126,
+                question: "Chất thải lây nhiễm phát sinh từ buồng mổ trong thời điểm có dịch bệnh mức độ nguy cơ cao phải:",
+                options: [
+                    "A. Thu gom khẩn và xử lý sơ bộ ngay tại chỗ",
+                    "B. Lưu giữ chung 24 giờ",
+                    "C. Cho đốt trực tiếp không cần khử khuẩn",
+                    "D. Chuyển đơn vị tái chế"
+                ],
+                correctAnswer: 0
+            },
+            {
+                id: 127,
+                question: "Kỹ thuật viên xử lý nước thải quên ghi thông số chỉ số vận hành 3 ngày liên tiếp. Cơ sở vi phạm yêu cầu về:",
+                options: [
+                    "A. Phân loại chất thải",
+                    "B. Hồ sơ quản lý",
+                    "C. Điều kiện trang thiết bị",
+                    "D. Kế hoạch đào tạo"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 128,
+                question: "Ở khoa Truyền nhiễm, chất thải sinh hoạt phát sinh từ phòng bệnh COVID-19 đã khỏi và ra viện <72 giờ phải:",
+                options: [
+                    "A. Quản lý như chất thải sinh hoạt thường",
+                    "B. Tái chế hoàn toàn",
+                    "C. Quản lý như chất thải lây nhiễm",
+                    "D. Đốt trực tiếp"
+                ],
+                correctAnswer: 2
+            },
+            {
+                id: 129,
+                question: "Thùng đựng chất thải lây nhiễm đặt sát khu đông bệnh nhân, gây nguy cơ tiếp xúc. Cần:",
+                options: [
+                    "A. Chuyển vị trí và có biển cảnh báo",
+                    "B. Nâng số lần thu gom",
+                    "C. Dán băng cảnh báo trên miệng thùng",
+                    "D. Không cần thay đổi"
+                ],
+                correctAnswer: 0
+            },
+            {
+                id: 130,
+                question: "Thời gian tối đa để lưu giữ chất thải lây nhiễm trong điều kiện bình thường (>8°C):",
+                options: [
+                    "A. 24 giờ",
+                    "B. 48 giờ",
+                    "C. 72 giờ",
+                    "D. 96 giờ"
+                ],
+                correctAnswer: 2
+            },
+            {
+                id: 131,
+                question: "Chất thải tái chế có dính máu ít nhưng đã xử lý qua hệ thống hấp đạt chuẩn:",
+                options: [
+                    "A. Đốt cùng chất thải lây nhiễm",
+                    "B. Bán tái chế theo quy định hợp đồng",
+                    "C. Chôn lấp hợp vệ sinh",
+                    "D. Vứt chung rác sinh hoạt"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 132,
+                question: "Khi lấy mẫu khí thải lò đốt, ghi chép sai thời điểm vận hành:",
+                options: [
+                    "A. Bị xử phạt vì sai hồ sơ môi trường",
+                    "B. Không ảnh hưởng vì số liệu tương đối",
+                    "C. Vẫn hợp lệ nếu có ký tên",
+                    "D. Chỉ báo cáo nội bộ là đủ"
+                ],
+                correctAnswer: 0
+            },
+            {
+                id: 133,
+                question: "Khu lưu giữ chất thải được thiết kế chung cho cả chất thải sinh hoạt và chất thải nguy hại không có phân ô riêng. Đây là vi phạm tiêu chuẩn:",
+                options: [
+                    "A. Đường vận chuyển",
+                    "B. Biển hiệu",
+                    "C. Kỹ thuật xây dựng khu lưu giữ",
+                    "D. Thiết bị bảo hộ"
+                ],
+                correctAnswer: 2
+            },
+            {
+                id: 134,
+                question: "Chất thải thuốc kèm vỏ lọ thủy tinh hết hạn thuộc nhóm:",
+                options: [
+                    "A. Tái chế được",
+                    "B. Chất thải lây nhiễm",
+                    "C. Chất thải nguy hại hóa học",
+                    "D. Rác sinh hoạt"
+                ],
+                correctAnswer: 2
+            },
+            {
+                id: 135,
+                question: "Hồ sơ nhật ký lò đốt ghi thiếu số lượng chất thải từng mẻ. Hậu quả:",
+                options: [
+                    "A. Không ảnh hưởng vận hành",
+                    "B. Không tổng hợp được báo cáo quản lý",
+                    "C. Tự động hủy số liệu lò",
+                    "D. Phải đốt lại"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 136,
+                question: "Đơn vị xử lý chất thải báo cáo số liệu không trùng khớp với lượng ghi nhận tại bệnh viện. Cơ sở y tế phải:",
+                options: [
+                    "A. Bỏ qua vì đơn vị đã có phép",
+                    "B. Đối chiếu, xác minh và lập biên bản",
+                    "C. Giảm lượng chất thải phát sinh báo cáo",
+                    "D. Ký chấp nhận"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 137,
+                question: "Nhân viên thu gom không mang đầy đủ PPE khi vận chuyển chất thải lây nhiễm lần đầu. Biện pháp đúng:",
+                options: [
+                    "A. Nhắc nhở chung toàn khoa",
+                    "B. Ngừng công việc và huấn luyện lại",
+                    "C. Giao nhiệm vụ khác",
+                    "D. Chỉ cảnh cáo miệng"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 138,
+                question: "Cơ sở y tế có kế hoạch giảm phát sinh chất thải nhưng bỏ qua việc đào tạo phân loại. Sai lầm ở:",
+                options: [
+                    "A. Trang thiết bị",
+                    "B. Nhân lực",
+                    "C. Quy trình kiểm soát",
+                    "D. Nhận thức"
+                ],
+                correctAnswer: 3
+            },
+            {
+                id: 139,
+                question: "Đơn vị vận chuyển chất thải lây nhiễm để rơi vãi trong quá trình di chuyển. Trách nhiệm:",
+                options: [
+                    "A. Đơn vị xử lý",
+                    "B. Đơn vị vận chuyển",
+                    "C. Cơ sở y tế",
+                    "D. Cả hai B và C"
+                ],
+                correctAnswer: 3
+            },
+            {
+                id: 140,
+                question: "Công cụ quan trọng nhất để đánh giá hiệu quả quản lý chất thải:",
+                options: [
+                    "A. Nhật ký vận hành",
+                    "B. Kiểm tra, giám sát và đánh giá nội bộ định kỳ",
+                    "C. Báo cáo năm",
+                    "D. Số lượng chất thải phát sinh"
+                ],
+                correctAnswer: 1
+            },
+            // Bộ câu hỏi kiểm soát nhiễm khuẩn (181-210)
+            {
+                id: 181,
+                question: "Mục tiêu cơ bản nhất của kiểm soát nhiễm khuẩn bệnh viện là:",
+                options: [
+                    "A. Nâng cao chất lượng chăm sóc",
+                    "B. Giảm tỷ lệ tử vong và biến chứng do nhiễm khuẩn bệnh viện",
+                    "C. Tiết kiệm chi phí điều trị",
+                    "D. Tăng thời gian nằm viện"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 182,
+                question: "Thành phần của hệ thống KSNK trong bệnh viện từ 150 giường trở lên gồm:",
+                options: [
+                    "A. Hội đồng KSNK, khoa/bộ phận KSNK, mạng lưới KSNK",
+                    "B. Chỉ có khoa KSNK",
+                    "C. Chỉ có Hội đồng KSNK",
+                    "D. Hội đồng KSNK và giám đốc bệnh viện"
+                ],
+                correctAnswer: 0
+            },
+            {
+                id: 183,
+                question: "Nhiệm vụ quan trọng nhất của Hội đồng KSNK:",
+                options: [
+                    "A. Kiểm tra giám sát xử lý chất thải",
+                    "B. Ban hành và phê duyệt chương trình KSNK toàn bệnh viện",
+                    "C. Theo dõi số lượng dụng cụ vô khuẩn",
+                    "D. Quản lý kho đồ vải"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 184,
+                question: "Vai trò của mạng lưới KSNK tại các khoa lâm sàng:",
+                options: [
+                    "A. Lập kế hoạch mua sắm thiết bị",
+                    "B. Triển khai, giám sát thực hiện các hướng dẫn KSNK",
+                    "C. Quản lý bệnh án",
+                    "D. Phụ trách tài chính khoa"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 185,
+                question: "Một trong các điều kiện về cơ sở hạ tầng phải đảm bảo cho hoạt động KSNK:",
+                options: [
+                    "A. Có bồn rửa tay đạt chuẩn",
+                    "B. Có giường bệnh rộng rãi",
+                    "C. Có nhà ăn riêng",
+                    "D. Có phòng chờ"
+                ],
+                correctAnswer: 0
+            },
+            {
+                id: 186,
+                question: "Vô khuẩn nội khoa khác vô khuẩn ngoại khoa ở điểm:",
+                options: [
+                    "A. Cả hai đều áp dụng trong phẫu thuật",
+                    "B. Vô khuẩn nội khoa tập trung ngăn vi sinh ra ngoài cơ thể người bệnh",
+                    "C. Vô khuẩn ngoại khoa tập trung bảo vệ vùng phẫu thuật khỏi vi sinh ngoài môi trường",
+                    "D. Cả B và C"
+                ],
+                correctAnswer: 3
+            },
+            {
+                id: 187,
+                question: "Phòng ngừa chuẩn được áp dụng cho:",
+                options: [
+                    "A. Chỉ bệnh nhân có nguy cơ nhiễm trùng",
+                    "B. Tất cả bệnh nhân, không phân biệt tình trạng nhiễm trùng",
+                    "C. Bệnh nhân ICU",
+                    "D. Bệnh nhân trước phẫu thuật"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 188,
+                question: "Biện pháp quan trọng nhất trong phòng ngừa chuẩn:",
+                options: [
+                    "A. Đeo khẩu trang",
+                    "B. Rửa tay",
+                    "C. Khử khuẩn bề mặt",
+                    "D. Cách ly"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 189,
+                question: "Đường lây truyền qua giọt bắn yêu cầu:",
+                options: [
+                    "A. Cách ly áp lực âm",
+                    "B. Đeo khẩu trang ngoại khoa",
+                    "C. Đeo N95",
+                    "D. Rửa tay bằng nước thường"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 190,
+                question: "Đường lây truyền qua không khí yêu cầu:",
+                options: [
+                    "A. Phòng áp lực âm, N95",
+                    "B. Khẩu trang thường",
+                    "C. Cửa mở thông thoáng",
+                    "D. Dùng găng tay"
+                ],
+                correctAnswer: 0
+            },
+            {
+                id: 191,
+                question: "Ví dụ lây truyền qua đường tiếp xúc:",
+                options: [
+                    "A. COVID-19",
+                    "B. MRSA",
+                    "C. Lao phổi",
+                    "D. Sởi"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 192,
+                question: "Mục tiêu giám sát nhiễm khuẩn bệnh viện:",
+                options: [
+                    "A. Thu thập, phân tích dữ liệu để đưa ra giải pháp phòng ngừa",
+                    "B. Ghi nhận số liệu cho đủ yêu cầu",
+                    "C. Phát hiện vi phạm xử phạt",
+                    "D. Tìm nguồn lây để đổ lỗi"
+                ],
+                correctAnswer: 0
+            },
+            {
+                id: 193,
+                question: "Chương trình KSNK hiệu quả cần:",
+                options: [
+                    "A. Chỉ tập trung khoa Hồi sức",
+                    "B. Sự tham gia của toàn bộ hệ thống bệnh viện",
+                    "C. Chỉ cần khoa KSNK",
+                    "D. Tập trung hóa đơn chứng từ"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 194,
+                question: "Một hoạt động thuộc thực hành KSNK ngoại khoa:",
+                options: [
+                    "A. Vệ sinh hô hấp",
+                    "B. Rửa tay phẫu thuật",
+                    "C. Lau sàn phòng bệnh",
+                    "D. Thu gom rác"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 195,
+                question: "Nguyên tắc sử dụng phương tiện phòng hộ cá nhân:",
+                options: [
+                    "A. Sử dụng theo cảm tính",
+                    "B. Theo nguy cơ phơi nhiễm",
+                    "C. Chỉ dùng khi có dịch bệnh",
+                    "D. Chỉ dùng khi có bệnh nhân cách ly"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 196,
+                question: "Đối tượng chịu trách nhiệm đào tạo KSNK cho nhân viên:",
+                options: [
+                    "A. Khoa Dược",
+                    "B. Hội đồng KSNK / Khoa KSNK",
+                    "C. Bộ phận tài chính",
+                    "D. Bảo hiểm y tế"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 197,
+                question: "Ví dụ thực hành phòng ngừa theo đường lây truyền:",
+                options: [
+                    "A. Che miệng khi ho",
+                    "B. Cách ly áp lực âm với lao phổi",
+                    "C. Đeo khẩu trang phẫu thuật với cúm",
+                    "D. Tất cả các đáp án đúng"
+                ],
+                correctAnswer: 3
+            },
+            {
+                id: 198,
+                question: "Sai phạm nguy hiểm nhất khi xử lý chất thải:",
+                options: [
+                    "A. Dùng tay nén rác",
+                    "B. Ghi nhãn đầy đủ",
+                    "C. Khử khuẩn khu vực",
+                    "D. Theo quy trình đồng bộ"
+                ],
+                correctAnswer: 0
+            },
+            {
+                id: 199,
+                question: "Giám sát thực hành KSNK nhằm:",
+                options: [
+                    "A. Kiểm tra và phản hồi cải tiến",
+                    "B. Ghi nhận hình thức",
+                    "C. Tăng KPI",
+                    "D. Hoàn thành báo cáo"
+                ],
+                correctAnswer: 0
+            },
+            {
+                id: 200,
+                question: "Ví dụ bệnh lây truyền qua không khí:",
+                options: [
+                    "A. Sởi, lao, thủy đậu",
+                    "B. Cúm, COVID",
+                    "C. Viêm gan B",
+                    "D. Tiêu chảy"
+                ],
+                correctAnswer: 0
+            },
+            // Bộ câu hỏi thực hành KSNK (221-250)
+            {
+                id: 221,
+                question: "Thời gian chà tay với dung dịch chứa cồn theo chuẩn WHO tối thiểu là:",
+                options: [
+                    "A. 10 giây",
+                    "B. 20–30 giây",
+                    "C. 1 phút",
+                    "D. 2 phút"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 222,
+                question: "Thời điểm rửa tay nào sau đây không thuộc 5 thời điểm WHO?",
+                options: [
+                    "A. Trước khi tiếp xúc người bệnh",
+                    "B. Trước làm thủ thuật sạch",
+                    "C. Trước ăn",
+                    "D. Sau tiếp xúc dịch cơ thể"
+                ],
+                correctAnswer: 2
+            },
+            {
+                id: 223,
+                question: "Sai sót phổ biến nhất khiến rửa tay không đạt hiệu quả:",
+                options: [
+                    "A. Dùng cồn nồng độ cao",
+                    "B. Không làm khô tay đúng cách",
+                    "C. Rửa quá lâu",
+                    "D. Rửa tay bằng xà phòng diệt khuẩn"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 224,
+                question: "Mặc áo choàng vô khuẩn đúng phải tuân thủ nguyên tắc:",
+                options: [
+                    "A. Không chạm mặt ngoài áo choàng",
+                    "B. Chạm mọi vị trí khi cần điều chỉnh",
+                    "C. Mặc từ dưới lên",
+                    "D. Buộc dây trước khi mang găng"
+                ],
+                correctAnswer: 0
+            },
+            {
+                id: 225,
+                question: "Khi mang găng vô khuẩn theo phương pháp kín (closed technique), yêu cầu quan trọng nhất:",
+                options: [
+                    "A. Tay trần không chạm vào mặt ngoài găng",
+                    "B. Găng phải sát da",
+                    "C. Găng phải đúng kích cỡ",
+                    "D. Chọn màu găng phù hợp"
+                ],
+                correctAnswer: 0
+            },
+            {
+                id: 226,
+                question: "Kim tiêm sau tiêm truyền được xử lý như thế nào?",
+                options: [
+                    "A. Bẻ hoặc gập trước khi bỏ",
+                    "B. Không đậy lại nắp, bỏ vào hộp sắc nhọn ngay",
+                    "C. Đậy lại nắp bằng hai tay",
+                    "D. Rửa rồi tái sử dụng"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 227,
+                question: "Nguyên nhân chính gây tai nạn kim đâm cho nhân viên y tế:",
+                options: [
+                    "A. Dụng cụ kém chất lượng",
+                    "B. Đậy lại nắp kim sau sử dụng",
+                    "C. Chất thải quá nhiều",
+                    "D. Thiếu hộp sắc nhọn"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 228,
+                question: "Phơi nhiễm máu qua vết thương chảy máu xử trí đầu tiên:",
+                options: [
+                    "A. Băng ép chặt",
+                    "B. Rửa dưới vòi nước và để máu chảy nhẹ",
+                    "C. Ngâm cồn 90°",
+                    "D. Lau khô ngay"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 229,
+                question: "Hộp đựng vật sắc nhọn được thay khi đầy:",
+                options: [
+                    "A. 50%",
+                    "B. 75%",
+                    "C. 100%",
+                    "D. Bất cứ lúc nào"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 230,
+                question: "Biện pháp phòng ngừa hiệu quả nhất tai nạn phơi nhiễm:",
+                options: [
+                    "A. Đào tạo, giám sát và tuân thủ quy trình",
+                    "B. Mua hộp sắc nhọn lớn hơn",
+                    "C. Tăng nhân lực thu gom",
+                    "D. Bắt buộc đeo hai lớp găng"
+                ],
+                correctAnswer: 0
+            },
+            {
+                id: 231,
+                question: "Quy trình đóng gói dụng cụ chuẩn bị tiệt khuẩn yêu cầu:",
+                options: [
+                    "A. Gói không quá chặt, không quá lỏng",
+                    "B. Gói càng chặt càng tốt",
+                    "C. Để nhiều khoảng trống trong gói",
+                    "D. Không cần ghi nhãn"
+                ],
+                correctAnswer: 0
+            },
+            {
+                id: 232,
+                question: "Chỉ thị sinh học dùng kiểm tra tiệt khuẩn hơi nước:",
+                options: [
+                    "A. Bacillus subtilis",
+                    "B. Geobacillus stearothermophilus",
+                    "C. Candida albicans",
+                    "D. Clostridium tetani"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 233,
+                question: "Chỉ thị hóa học lớp 5 có ý nghĩa:",
+                options: [
+                    "A. Chỉ báo đạt nhiệt độ",
+                    "B. Chỉ báo cả 3 thông số: thời gian – nhiệt độ – hơi nước",
+                    "C. Cảnh báo rò rỉ áp lực",
+                    "D. Chỉ dùng kiểm tra máy hấp mới"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 234,
+                question: "Kho chứa dụng cụ vô khuẩn yêu cầu:",
+                options: [
+                    "A. Sạch, khô, thoáng, không bụi",
+                    "B. Gần bồn rửa tay",
+                    "C. Không cần kiểm soát môi trường",
+                    "D. Để dưới mặt đất"
+                ],
+                correctAnswer: 0
+            },
+            {
+                id: 235,
+                question: "Dụng cụ nội soi thuộc nhóm Spaulding:",
+                options: [
+                    "A. Thiết yếu",
+                    "B. Bán thiết yếu",
+                    "C. Không thiết yếu",
+                    "D. Tiệt khuẩn không cần thiết"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 236,
+                question: "Thời gian rửa tay phẫu thuật bằng dung dịch cồn:",
+                options: [
+                    "A. 20 giây",
+                    "B. 60–90 giây",
+                    "C. 3–5 phút",
+                    "D. 10 phút"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 237,
+                question: "Nguyên nhân chính gây NKVM:",
+                options: [
+                    "A. Tay NVYT mang mầm bệnh",
+                    "B. Không đủ găng",
+                    "C. Dụng cụ quá nhiều",
+                    "D. Chất lượng phòng mổ"
+                ],
+                correctAnswer: 0
+            },
+            {
+                id: 238,
+                question: "Biện pháp hiệu quả nhất phòng NKVM:",
+                options: [
+                    "A. Vô khuẩn phẫu thuật nghiêm ngặt",
+                    "B. Mở cửa phòng mổ liên tục",
+                    "C. Tăng thông khí tự nhiên",
+                    "D. Tắt điều hòa"
+                ],
+                correctAnswer: 0
+            },
+            {
+                id: 239,
+                question: "Yếu tố nguy cơ cao nhất gây VAP:",
+                options: [
+                    "A. Nằm lâu",
+                    "B. Thở máy",
+                    "C. Cao tuổi",
+                    "D. Dinh dưỡng kém"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 240,
+                question: "Tư thế bệnh nhân dự phòng VAP:",
+                options: [
+                    "A. Nằm ngửa 0°",
+                    "B. Nâng đầu giường 30–45°",
+                    "C. Ngồi dậy",
+                    "D. Nằm nghiêng"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 241,
+                question: "Phương pháp dự phòng VAP hiệu quả nhất:",
+                options: [
+                    "A. Hút đờm thường xuyên ngăn đọng",
+                    "B. Đeo khẩu trang",
+                    "C. Thay giường liên tục",
+                    "D. Không cho ăn đường miệng"
+                ],
+                correctAnswer: 0
+            },
+            {
+                id: 242,
+                question: "Loại vi khuẩn thường gặp gây VAP:",
+                options: [
+                    "A. MRSA, Pseudomonas aeruginosa",
+                    "B. Staphylococcus epidermidis",
+                    "C. Streptococcus pyogenes",
+                    "D. Corynebacterium"
+                ],
+                correctAnswer: 0
+            },
+            {
+                id: 243,
+                question: "Đánh giá hiệu quả dự phòng VAP dựa trên:",
+                options: [
+                    "A. Tỷ lệ NKVM",
+                    "B. Tỷ lệ VAP/1000 ngày thở máy",
+                    "C. Số bệnh nhân nhập viện",
+                    "D. Số bệnh nhân tử vong"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 244,
+                question: "Lau bề mặt môi trường bằng hóa chất có chứa chlorine nồng độ:",
+                options: [
+                    "A. 0,02%",
+                    "B. 0,05%",
+                    "C. 0,1%",
+                    "D. 1%"
+                ],
+                correctAnswer: 2
+            },
+            {
+                id: 245,
+                question: "Đồ vải nhiễm bẩn thu gom:",
+                options: [
+                    "A. Túi trắng",
+                    "B. Túi vàng 2 lớp",
+                    "C. Túi đỏ, buộc kín",
+                    "D. Thùng xanh"
+                ],
+                correctAnswer: 2
+            },
+            {
+                id: 246,
+                question: "Lau bề mặt có máu đổ:",
+                options: [
+                    "A. Lau khô trước",
+                    "B. Phủ khăn thấm và đổ chlorine 0,5%",
+                    "C. Dùng nước lạnh",
+                    "D. Ngâm xà phòng"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 247,
+                question: "Hướng lau bề mặt đúng:",
+                options: [
+                    "A. Ngẫu nhiên",
+                    "B. Từ trong ra ngoài, từ cao xuống thấp",
+                    "C. Theo vòng tròn",
+                    "D. Từ thấp lên cao"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 248,
+                question: "Quy tắc quan trọng trong vệ sinh bệnh viện:",
+                options: [
+                    "A. Ưu tiên khu bẩn trước",
+                    "B. Ưu tiên khu sạch trước",
+                    "C. Lau theo yêu cầu người bệnh",
+                    "D. Lau theo giờ cố định"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 249,
+                question: "Nhân viên thu gom rác nén túi rác lây nhiễm để đóng kín. Việc này:",
+                options: [
+                    "A. Bình thường",
+                    "B. Nguy hiểm, tăng nguy cơ kim đâm",
+                    "C. Giúp tiết kiệm túi",
+                    "D. Không ảnh hưởng"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 250,
+                question: "NVYT chạm mặt ngoài găng khi mang găng vô khuẩn, phải:",
+                options: [
+                    "A. Tiếp tục vì găng vẫn sạch",
+                    "B. Thay găng mới",
+                    "C. Rửa găng bằng cồn",
+                    "D. Sát khuẩn rồi dùng lại"
+                ],
+                correctAnswer: 1
+            },
+            // Bộ câu hỏi phòng ngừa chuẩn (51-80)
+            {
+                id: 51,
+                question: "Mục tiêu chính của phòng ngừa chuẩn là:",
+                options: [
+                    "A. Ngăn lây truyền từ NB sang NB",
+                    "B. Ngăn lây từ NB sang NVYT",
+                    "C. Ngăn lây từ môi trường vào NB",
+                    "D. Tất cả trên"
+                ],
+                correctAnswer: 3
+            },
+            {
+                id: 52,
+                question: "Dung dịch sát khuẩn tay chứa cồn dùng khi:",
+                options: [
+                    "A. Tay nhìn thấy bẩn",
+                    "B. Tay không nhìn thấy bẩn",
+                    "C. Sau khi tháo găng",
+                    "D. B và C đúng"
+                ],
+                correctAnswer: 3
+            },
+            {
+                id: 53,
+                question: "Không dùng khăn nào khi lau vệ sinh?",
+                options: [
+                    "A. Khăn lau ẩm",
+                    "B. Khăn dùng 1 lần",
+                    "C. Khăn lau chung cho nhiều khu vực",
+                    "D. Khăn lau được giặt lại"
+                ],
+                correctAnswer: 2
+            },
+            {
+                id: 54,
+                question: "Móng tay dài và mang nhẫn gây ảnh hưởng vì:",
+                options: [
+                    "A. Giảm khả năng rửa tay hiệu quả",
+                    "B. Dễ giữ vi sinh vật",
+                    "C. Dễ làm rách găng",
+                    "D. Tất cả đúng"
+                ],
+                correctAnswer: 3
+            },
+            {
+                id: 55,
+                question: "Loại găng nào dùng trong thủ thuật xâm lấn?",
+                options: [
+                    "A. Găng sạch",
+                    "B. Găng vô trùng",
+                    "C. Găng cao su dày",
+                    "D. Găng dùng lại"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 56,
+                question: "Sau khi tiếp xúc vùng bẩn rồi chuyển sang vùng sạch trên cùng NB phải:",
+                options: [
+                    "A. Thay găng",
+                    "B. Rửa tay",
+                    "C. Thay găng + rửa tay",
+                    "D. Không cần"
+                ],
+                correctAnswer: 2
+            },
+            {
+                id: 57,
+                question: "Khẩu trang treo ở cổ rồi đeo lại có nguy cơ:",
+                options: [
+                    "A. Giảm hiệu quả lọc",
+                    "B. Tự gây nhiễm chéo",
+                    "C. Nhiễm bẩn bề mặt trong",
+                    "D. Tất cả đúng"
+                ],
+                correctAnswer: 3
+            },
+            {
+                id: 58,
+                question: "Dụng cụ tiếp xúc da lành lặn cần mức khử khuẩn:",
+                options: [
+                    "A. Thấp hoặc trung bình",
+                    "B. Cao",
+                    "C. Tiệt khuẩn",
+                    "D. Không cần khử khuẩn"
+                ],
+                correctAnswer: 0
+            },
+            {
+                id: 59,
+                question: "Vệ sinh hô hấp yêu cầu BN phải:",
+                options: [
+                    "A. Che miệng khi ho bằng tay",
+                    "B. Che miệng bằng khăn hoặc khuỷu tay",
+                    "C. Ho thoải mái",
+                    "D. Mang khẩu trang vải"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 60,
+                question: "Dụng cụ tiệt khuẩn nếu bao gói rách phải:",
+                options: [
+                    "A. Dùng được",
+                    "B. Lau lại bằng cồn",
+                    "C. Tiệt khuẩn lại",
+                    "D. Chỉ dán lại bọc"
+                ],
+                correctAnswer: 2
+            },
+            {
+                id: 61,
+                question: "Không nên làm gì khi xử lý vật sắc nhọn?",
+                options: [
+                    "A. Bẻ cong kim",
+                    "B. Bỏ ngay vào hộp sắc nhọn",
+                    "C. Dùng kỹ thuật xúc một tay nếu cần đậy nắp",
+                    "D. Không mang đi lại"
+                ],
+                correctAnswer: 0
+            },
+            {
+                id: 62,
+                question: "Hộp đựng vật sắc nhọn phải đặt:",
+                options: [
+                    "A. Dưới sàn",
+                    "B. Trên xe tiêm, gần vị trí thao tác",
+                    "C. Cuối hành lang",
+                    "D. Trong kho"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 63,
+                question: "Khi thu gom đồ vải lây nhiễm phải:",
+                options: [
+                    "A. Bỏ chung với đồ vải bẩn",
+                    "B. Dùng túi chống thấm màu vàng",
+                    "C. Để dưới sàn",
+                    "D. Giũ mạnh cho dễ gom"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 64,
+                question: "Đồ vải sạch cần:",
+                options: [
+                    "A. Bảo quản trong kho sạch, có kệ",
+                    "B. Để chung với đồ bẩn",
+                    "C. Để dưới nền nhà",
+                    "D. Không cần che đậy"
+                ],
+                correctAnswer: 0
+            },
+            {
+                id: 65,
+                question: "Nhân viên vệ sinh cần làm sạch khoa phòng vào thời điểm:",
+                options: [
+                    "A. Khi đang khám bệnh",
+                    "B. Sớm trước giờ khám 30 phút",
+                    "C. Khi đông bệnh nhân",
+                    "D. Cuối ngày"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 66,
+                question: "Giám sát NKBV là hoạt động:",
+                options: [
+                    "A. Thu thập",
+                    "B. Phân tích",
+                    "C. Báo cáo – phản hồi",
+                    "D. Tất cả đúng"
+                ],
+                correctAnswer: 3
+            },
+            {
+                id: 67,
+                question: "Một yếu tố nội sinh trong NKBV là:",
+                options: [
+                    "A. Dụng cụ y tế",
+                    "B. Tuổi, bệnh nền",
+                    "C. Thuốc",
+                    "D. Môi trường BV"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 68,
+                question: "Ý nghĩa của giám sát NKBV:",
+                options: [
+                    "A. Phát hiện dịch sớm",
+                    "B. Giảm tỉ lệ mắc",
+                    "C. Cải thiện thực hành NVYT",
+                    "D. Tất cả đúng"
+                ],
+                correctAnswer: 3
+            },
+            {
+                id: 69,
+                question: "Giám sát trọng điểm là:",
+                options: [
+                    "A. Giám sát toàn BV",
+                    "B. Giám sát tại một khoa nguy cơ cao",
+                    "C. Giám sát cộng đồng",
+                    "D. Giám sát theo năm"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 70,
+                question: "Giám sát ca bệnh mới mắc (incidence) cần thời gian:",
+                options: [
+                    "A. Theo dõi liên tục",
+                    "B. Một lần duy nhất",
+                    "C. 1 giờ",
+                    "D. Không cần theo dõi"
+                ],
+                correctAnswer: 0
+            },
+            {
+                id: 71,
+                question: "Nhược điểm của giám sát hồi cứu:",
+                options: [
+                    "A. Tốn kém",
+                    "B. Phụ thuộc vào chất lượng hồ sơ bệnh án",
+                    "C. Không phân tích được",
+                    "D. Không dùng được dữ liệu cũ"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 72,
+                question: "Giám sát cắt ngang được thực hiện:",
+                options: [
+                    "A. Hàng ngày",
+                    "B. Tại một thời điểm nhất định",
+                    "C. Theo tuần",
+                    "D. 6 giờ/lần"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 73,
+                question: "Điều tra xã hội học dùng để tìm:",
+                options: [
+                    "A. Các yếu tố nguy cơ xã hội",
+                    "B. Căn nguyên vi sinh",
+                    "C. Mẫu bệnh phẩm",
+                    "D. Tính kháng thuốc"
+                ],
+                correctAnswer: 0
+            },
+            {
+                id: 74,
+                question: "Ưu điểm của giám sát qua mạng thông tin BV:",
+                options: [
+                    "A. Nhanh, ít tốn công",
+                    "B. Không cần nhân lực",
+                    "C. Không cần phân tích",
+                    "D. Chỉ lấy mẫu máu"
+                ],
+                correctAnswer: 0
+            },
+            {
+                id: 75,
+                question: "Hiện mắc điểm là:",
+                options: [
+                    "A. Số ca mới",
+                    "B. Số ca hiện có tại một thời điểm",
+                    "C. Số ca xuất viện",
+                    "D. Số ca tử vong"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 76,
+                question: "Tăng incidence đột ngột cho thấy:",
+                options: [
+                    "A. Nguy cơ dịch",
+                    "B. Giảm kiểm soát",
+                    "C. Thiết bị sạch",
+                    "D. Đồ vải tốt hơn"
+                ],
+                correctAnswer: 0
+            },
+            {
+                id: 77,
+                question: "Dữ liệu giám sát phải được:",
+                options: [
+                    "A. Thu thập – phân tích – phản hồi",
+                    "B. Thu thập rồi cất",
+                    "C. Gửi xử lý trễ vài tháng",
+                    "D. Chỉ báo cáo khi có dịch"
+                ],
+                correctAnswer: 0
+            },
+            {
+                id: 78,
+                question: "Bộ công cụ giám sát cần:",
+                options: [
+                    "A. Tiêu chí rõ ràng",
+                    "B. Dễ sử dụng",
+                    "C. Phù hợp từng khoa",
+                    "D. Tất cả đúng"
+                ],
+                correctAnswer: 3
+            },
+            {
+                id: 79,
+                question: "Giám sát thực hành KSNK ưu tiên:",
+                options: [
+                    "A. Vệ sinh tay",
+                    "B. Mang găng",
+                    "C. Tiêm an toàn",
+                    "D. Tất cả đúng"
+                ],
+                correctAnswer: 3
+            },
+            {
+                id: 80,
+                question: "Kết quả giám sát phải:",
+                options: [
+                    "A. Phổ biến kịp thời",
+                    "B. Không cần báo lại",
+                    "C. Chỉ lưu hồ sơ",
+                    "D. Chỉ báo điều dưỡng"
+                ],
+                correctAnswer: 0
+            }
+        ];
+
+        // Biến toàn cục
+        let currentQuestions = [];
+        let currentQuestionIndex = 0;
+        let userAnswers = [];
+        let timer;
+        let timeLeft = 30 * 60; // 30 phút
+        let quizStarted = false;
+
+        // DOM Elements
+        const startScreen = document.getElementById('start-screen');
+        const quizScreen = document.getElementById('quiz-screen');
+        const resultsScreen = document.getElementById('results-screen');
+        const startBtn = document.getElementById('start-btn');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const currentQuestionElement = document.getElementById('current-question');
+        const timerElement = document.getElementById('timer');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const submitBtn = document.getElementById('submit-btn');
+        const saveBtn = document.getElementById('save-btn');
+        const finalScore = document.getElementById('final-score');
+        const correctCount = document.getElementById('correct-count');
+        const incorrectCount = document.getElementById('incorrect-count');
+        const timeTaken = document.getElementById('time-taken');
+        const scoreMessage = document.getElementById('score-message');
+        const reviewList = document.getElementById('review-list');
+        const restartBtn = document.getElementById('restart-btn');
+        const reviewBtn = document.getElementById('review-btn');
+        const quizProgress = document.getElementById('quiz-progress');
+        const questionNavigation = document.getElementById('question-navigation');
+
+        // Sự kiện
+        startBtn.addEventListener('click', startQuiz);
+        prevBtn.addEventListener('click', showPreviousQuestion);
+        nextBtn.addEventListener('click', showNextQuestion);
+        submitBtn.addEventListener('click', submitQuiz);
+        saveBtn.addEventListener('click', saveProgress);
+        restartBtn.addEventListener('click', restartQuiz);
+        reviewBtn.addEventListener('click', reviewQuiz);
+
+        // Hàm bắt đầu bài quiz
+        function startQuiz() {
+            // Kiểm tra xem có tiến trình đã lưu không
+            const savedProgress = loadProgress();
+            if (savedProgress) {
+                if (confirm('Có tiến trình bài làm đã lưu. Bạn có muốn tiếp tục?')) {
+                    restoreProgress(savedProgress);
+                    return;
+                }
+            }
+            
+            // Chọn ngẫu nhiên 30 câu hỏi từ ngân hàng
+            currentQuestions = getRandomQuestions(30);
+            
+            // Khởi tạo mảng câu trả lời của người dùng
+            userAnswers = new Array(currentQuestions.length).fill(null);
+            
+            // Hiển thị màn hình quiz
+            startScreen.classList.add('hidden');
+            quizScreen.classList.remove('hidden');
+            
+            // Bắt đầu đếm ngược thời gian
+            startTimer();
+            
+            // Tạo navigation cho các câu hỏi
+            createQuestionNavigation();
+            
+            // Hiển thị câu hỏi đầu tiên
+            showQuestion(0);
+            
+            quizStarted = true;
+        }
+
+        // Hàm chọn ngẫu nhiên câu hỏi
+        function getRandomQuestions(count) {
+            try {
+                if (count > questionBank.length) {
+                    console.warn(`Yêu cầu ${count} câu nhưng chỉ có ${questionBank.length} câu`);
+                    count = questionBank.length;
+                }
+                const shuffled = [...questionBank].sort(() => 0.5 - Math.random());
+                return shuffled.slice(0, count);
+            } catch (error) {
+                console.error('Lỗi khi lấy câu hỏi:', error);
+                return [];
+            }
+        }
+
+        // Hàm tạo navigation cho các câu hỏi
+        function createQuestionNavigation() {
+            questionNavigation.innerHTML = '';
+            
+            currentQuestions.forEach((_, index) => {
+                const navBtn = document.createElement('button');
+                navBtn.className = 'question-nav-btn';
+                navBtn.textContent = index + 1;
+                navBtn.addEventListener('click', () => showQuestion(index));
+                
+                questionNavigation.appendChild(navBtn);
+            });
+            
+            updateQuestionNavigation();
+        }
+
+        // Hàm cập nhật navigation
+        function updateQuestionNavigation() {
+            const navButtons = document.querySelectorAll('.question-nav-btn');
+            
+            navButtons.forEach((btn, index) => {
+                btn.classList.remove('current', 'answered');
+                
+                if (index === currentQuestionIndex) {
+                    btn.classList.add('current');
+                }
+                
+                if (userAnswers[index] !== null) {
+                    btn.classList.add('answered');
+                }
+            });
+            
+            // Cập nhật progress bar
+            const answeredCount = userAnswers.filter(answer => answer !== null).length;
+            const progressPercentage = (answeredCount / currentQuestions.length) * 100;
+            quizProgress.style.width = `${progressPercentage}%`;
+        }
+
+        // Hàm hiển thị câu hỏi
+        function showQuestion(index) {
+            currentQuestionIndex = index;
+            const question = currentQuestions[index];
+            
+            // Cập nhật số câu hỏi hiện tại
+            currentQuestionElement.textContent = index + 1;
+            
+            // Hiển thị câu hỏi
+            questionText.textContent = question.question;
+            
+            // Xóa các lựa chọn cũ
+            optionsContainer.innerHTML = '';
+            
+            // Thêm các lựa chọn mới
+            question.options.forEach((option, optionIndex) => {
+                const optionElement = document.createElement('div');
+                optionElement.className = 'option';
+                if (userAnswers[index] === optionIndex) {
+                    optionElement.classList.add('selected');
+                }
+                
+                optionElement.innerHTML = `
+                    <div class="option-letter">${String.fromCharCode(65 + optionIndex)}</div>
+                    <div class="option-text">${option}</div>
+                `;
+                
+                optionElement.addEventListener('click', () => selectOption(optionIndex));
+                optionsContainer.appendChild(optionElement);
+            });
+            
+            // Cập nhật trạng thái nút điều hướng
+            prevBtn.disabled = index === 0;
+            nextBtn.disabled = index === currentQuestions.length - 1;
+            
+            // Cập nhật navigation
+            updateQuestionNavigation();
+        }
+
+        // Hàm chọn đáp án
+        function selectOption(optionIndex) {
+            userAnswers[currentQuestionIndex] = optionIndex;
+            
+            // Cập nhật giao diện
+            const options = document.querySelectorAll('.option');
+            options.forEach((option, index) => {
+                if (index === optionIndex) {
+                    option.classList.add('selected');
+                } else {
+                    option.classList.remove('selected');
+                }
+            });
+            
+            // Cập nhật navigation
+            updateQuestionNavigation();
+            
+            // Tự động chuyển đến câu tiếp theo sau 1 giây (nếu không phải câu cuối)
+            if (currentQuestionIndex < currentQuestions.length - 1) {
+                setTimeout(() => {
+                    showQuestion(currentQuestionIndex + 1);
+                }, 800);
+            }
+        }
+
+        // Hàm hiển thị câu hỏi trước
+        function showPreviousQuestion() {
+            if (currentQuestionIndex > 0) {
+                showQuestion(currentQuestionIndex - 1);
+            }
+        }
+
+        // Hàm hiển thị câu hỏi tiếp theo
+        function showNextQuestion() {
+            if (currentQuestionIndex < currentQuestions.length - 1) {
+                showQuestion(currentQuestionIndex + 1);
+            }
+        }
+
+        // Hàm bắt đầu đếm ngược thời gian
+        function startTimer() {
+            timer = setInterval(() => {
+                timeLeft--;
+                
+                // Cập nhật hiển thị thời gian
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
+                // Đổi màu khi còn 5 phút
+                if (timeLeft <= 300) { // 5 phút = 300 giây
+                    timerElement.style.color = '#e74c3c';
+                }
+                
+                // Khi hết thời gian, tự động nộp bài
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    submitQuiz();
+                }
+            }, 1000);
+        }
+
+        // Hàm lưu tiến trình
+        function saveProgress() {
+            const progress = {
+                currentQuestions,
+                currentQuestionIndex,
+                userAnswers,
+                timeLeft
+            };
+            
+            localStorage.setItem('quizProgress', JSON.stringify(progress));
+            alert('Tiến trình đã được lưu thành công!');
+        }
+
+        // Hàm tải tiến trình
+        function loadProgress() {
+            try {
+                const saved = localStorage.getItem('quizProgress');
+                if (saved) {
+                    return JSON.parse(saved);
+                }
+            } catch (error) {
+                console.error('Lỗi khi tải tiến trình:', error);
+            }
+            return null;
+        }
+
+        // Hàm khôi phục tiến trình
+        function restoreProgress(progress) {
+            currentQuestions = progress.currentQuestions;
+            currentQuestionIndex = progress.currentQuestionIndex;
+            userAnswers = progress.userAnswers;
+            timeLeft = progress.timeLeft;
+            
+            // Hiển thị màn hình quiz
+            startScreen.classList.add('hidden');
+            quizScreen.classList.remove('hidden');
+            
+            // Bắt đầu đếm ngược thời gian
+            startTimer();
+            
+            // Tạo navigation cho các câu hỏi
+            createQuestionNavigation();
+            
+            // Hiển thị câu hỏi hiện tại
+            showQuestion(currentQuestionIndex);
+            
+            quizStarted = true;
+        }
+
+        // Hàm nộp bài
+        function submitQuiz() {
+            // Xác nhận nếu chưa trả lời câu nào
+            const answeredCount = userAnswers.filter(answer => answer !== null).length;
+            if (answeredCount === 0) {
+                if (!confirm('Bạn chưa trả lời câu nào. Vẫn muốn nộp bài?')) {
+                    return;
+                }
+            }
+            
+            clearInterval(timer);
+            
+            // Tính điểm
+            let correctAnswers = 0;
+            currentQuestions.forEach((question, index) => {
+                if (userAnswers[index] === question.correctAnswer) {
+                    correctAnswers++;
+                }
+            });
+            
+            // Hiển thị kết quả
+            showResults(correctAnswers);
+            
+            // Xóa tiến trình đã lưu
+            localStorage.removeItem('quizProgress');
+        }
+
+        // Hàm hiển thị kết quả
+        function showResults(correctAnswers) {
+            quizScreen.classList.add('hidden');
+            resultsScreen.classList.remove('hidden');
+            
+            const totalQuestions = currentQuestions.length;
+            const incorrectAnswers = totalQuestions - correctAnswers;
+            const percentage = Math.round((correctAnswers / totalQuestions) * 100);
+            
+            // Hiển thị điểm số
+            finalScore.textContent = `${correctAnswers}/${totalQuestions}`;
+            correctCount.textContent = correctAnswers;
+            incorrectCount.textContent = incorrectAnswers;
+            
+            // Hiển thị thời gian đã làm
+            const timeUsed = 30 * 60 - timeLeft;
+            const minutes = Math.floor(timeUsed / 60);
+            const seconds = timeUsed % 60;
+            timeTaken.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            
+            // Hiển thị thông báo kết quả
+            let message = "";
+            if (percentage >= 90) {
+                message = "Xuất sắc! Bạn có kiến thức rất tốt về chủ đề này.";
+            } else if (percentage >= 70) {
+                message = "Khá tốt! Bạn nắm vững kiến thức cơ bản.";
+            } else if (percentage >= 50) {
+                message = "Đạt yêu cầu! Bạn cần ôn tập thêm một số phần.";
+            } else {
+                message = "Cần cố gắng hơn! Bạn nên ôn tập kỹ lại kiến thức.";
+            }
+            scoreMessage.textContent = message;
+            
+            // Hiển thị xem lại các câu hỏi
+            showReviewQuestions();
+        }
+
+        // Hàm hiển thị xem lại các câu hỏi
+        function showReviewQuestions() {
+            reviewList.innerHTML = '';
+            
+            currentQuestions.forEach((question, index) => {
+                const userAnswer = userAnswers[index];
+                const isCorrect = userAnswer === question.correctAnswer;
+                
+                const reviewItem = document.createElement('div');
+                reviewItem.className = `review-item ${isCorrect ? 'correct-answer' : 'incorrect-answer'}`;
+                
+                let answerStatus = '';
+                if (isCorrect) {
+                    answerStatus = '✓';
+                } else {
+                    answerStatus = '✗';
+                }
+                
+                let userAnswerText = 'Không trả lời';
+                if (userAnswer !== null) {
+                    userAnswerText = question.options[userAnswer];
+                }
+                
+                const correctAnswerText = question.options[question.correctAnswer];
+                
+                reviewItem.innerHTML = `
+                    <div class="review-question">Câu ${index + 1}: ${question.question}</div>
+                    <div class="review-answer">
+                        <span class="answer-status">${answerStatus}</span>
+                        <span><strong>Đáp án của bạn:</strong> ${userAnswerText}</span>
+                    </div>
+                    ${!isCorrect ? `
+                    <div class="review-answer">
+                        <span class="answer-status">✓</span>
+                        <span><strong>Đáp án đúng:</strong> ${correctAnswerText}</span>
+                    </div>
+                    ` : ''}
+                `;
+                
+                reviewList.appendChild(reviewItem);
+            });
+        }
+
+        // Hàm xem lại bài làm
+        function reviewQuiz() {
+            resultsScreen.classList.add('hidden');
+            quizScreen.classList.remove('hidden');
+            
+            // Đặt lại timer
+            timeLeft = 0;
+            timerElement.textContent = "00:00";
+            timerElement.style.color = '#e74c3c';
+            
+            // Hiển thị câu hỏi đầu tiên
+            showQuestion(0);
+        }
+
+        // Hàm làm lại bài
+        function restartQuiz() {
+            // Reset các biến
+            currentQuestions = [];
+            currentQuestionIndex = 0;
+            userAnswers = [];
+            timeLeft = 30 * 60;
+            quizStarted = false;
+            
+            // Hiển thị màn hình bắt đầu
+            resultsScreen.classList.add('hidden');
+            startScreen.classList.remove('hidden');
+            
+            // Xóa tiến trình đã lưu
+            localStorage.removeItem('quizProgress');
+        }
+
+        // Khởi tạo
+        document.addEventListener('DOMContentLoaded', () => {
+            // Kiểm tra xem có tiến trình đã lưu không
+            const savedProgress = loadProgress();
+            if (savedProgress) {
+                if (confirm('Có tiến trình bài làm chưa hoàn thành. Bạn có muốn tiếp tục?')) {
+                    restoreProgress(savedProgress);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
